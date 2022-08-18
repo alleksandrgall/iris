@@ -30,12 +30,12 @@ import System.Process (readProcess)
 import qualified Data.Text as Text
 
 
-{- |
-
+{- | Describes a tool used by your CLI application.
 @since 0.0.0.0
 -}
 data Tool cmd = Tool
-    { -- | @since 0.0.0.0
+    { -- |
+      -- | @since 0.0.0.0
       toolName     :: Text
 
       -- | @since 0.0.0.0
@@ -53,7 +53,9 @@ instance IsString (Tool cmd) where
         , toolSelector = Nothing
         }
 
-{- |
+{- | Describes how to identify if tool is sutable for the application.
+  @toolSelectorFunction@ - accepts @cmd@ and tool version and returns @True@ if tool version is acceptable and @False@ otherwise.
+  @toolSelectorVersionArg@ - argument for the tool call to get a version.
 
 @since 0.0.0.0
 -}
@@ -65,7 +67,7 @@ data ToolSelector cmd = ToolSelector
     , toolSelectorVersionArg :: Maybe Text
     }
 
-{- |
+{- | Tool selector if the version doesn't matter.
 
 @since 0.0.0.0
 -}
@@ -102,7 +104,10 @@ data ToolCheckResult
         , Eq    -- ^ @since 0.0.0.0
         )
 
-{- |
+{- | Checks if tool is ok.
+  Returns @ToolNotFound@ if @toolName@ is not found by @findExecutable@.
+  Returns @ToolWrongVersion@ if specific tool version is requered by @ToolSelector@ but @findExecutable@ found the wrong version.
+  Returns @ToolOk@ otherwise.
 
 @since 0.0.0.0
 -}
